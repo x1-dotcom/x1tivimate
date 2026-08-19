@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="300" viewBox="0 0 1600 300" role="img" aria-label="X1 TiviMate control loop">
+<rect width="1600" height="300" rx="24" fill="#061018"/>
+<text x="70" y="55" font-family="Arial" font-size="18" fill="#6BA6B8" letter-spacing="6">X1 // CONTROL LOOP</text>
+<g font-family="Arial" font-weight="700" font-size="22" text-anchor="middle">
+<g transform="translate(80 100)"><rect width="220" height="95" rx="18" fill="#0A1720" stroke="#20E7FF"/><text x="110" y="55" fill="#fff">ENROLL</text></g>
+<g transform="translate(380 100)"><rect width="220" height="95" rx="18" fill="#0A1720" stroke="#20E7FF"/><text x="110" y="55" fill="#fff">PAIR</text></g>
+<g transform="translate(680 100)"><rect width="220" height="95" rx="18" fill="#0A1720" stroke="#20E7FF"/><text x="110" y="55" fill="#fff">SYNC</text></g>
+<g transform="translate(980 100)"><rect width="220" height="95" rx="18" fill="#0A1720" stroke="#20E7FF"/><text x="110" y="55" fill="#fff">MESSAGE</text></g>
+<g transform="translate(1280 100)"><rect width="220" height="95" rx="18" fill="#0A1720" stroke="#20E7FF"/><text x="110" y="55" fill="#fff">VERIFY</text></g>
+</g>
+<g stroke="#557B8B" stroke-width="3"><path d="M300 148h80M600 148h80M900 148h80M1200 148h80"/></g>
+<text x="800" y="250" text-anchor="middle" font-family="Arial" font-size="18" fill="#8AB8C7">A control action is not complete until the device state is checked.</text>
+</svg>

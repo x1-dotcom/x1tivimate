@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="310" viewBox="0 0 1600 310" role="img" aria-label="X1 TiviMate responsibility boundary">
+<rect width="1600" height="310" rx="24" fill="#050B10"/>
+<text x="70" y="52" font-family="Arial" font-size="18" fill="#6BA6B8" letter-spacing="6">X1 // RESPONSIBILITY BOUNDARY</text>
+<g transform="translate(80 88)"><rect width="650" height="150" rx="20" fill="#07151D" stroke="#20E7FF"/><text x="34" y="42" font-family="Arial Black,Arial" font-size="25" fill="#20E7FF">THE SOFTWARE PROVIDES</text><text x="34" y="82" font-family="Arial" font-size="21" fill="#D7EDF4">control · configuration · pairing · device visibility</text><text x="34" y="116" font-family="Arial" font-size="21" fill="#D7EDF4">messages · audit · authenticated administration</text></g>
+<g transform="translate(870 88)"><rect width="650" height="150" rx="20" fill="#101218" stroke="#6B7A86"/><text x="34" y="42" font-family="Arial Black,Arial" font-size="25" fill="#D9E1E6">THE OPERATOR PROVIDES</text><text x="34" y="82" font-family="Arial" font-size="21" fill="#C7D0D6">lawful services · credentials · infrastructure</text><text x="34" y="116" font-family="Arial" font-size="21" fill="#C7D0D6">compatible application builds · deployment validation</text></g>
+<text x="800" y="285" text-anchor="middle" font-family="Arial" font-size="17" fill="#6BA6B8" letter-spacing="3">CONTROL IS SOFTWARE. CONTENT AND SERVICE RIGHTS ARE NOT INCLUDED.</text>
+</svg>

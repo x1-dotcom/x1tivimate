@@ -1,406 +1,212 @@
-<div align="center">
+<p align="center">
+  <img src="./assets/x1-tivimate-hero.svg" alt="X1 TiviMate Community" width="100%" />
+</p>
 
-X1 TiviMate Control
+<p align="center">
+  <strong>PUBLIC · FREE · SELF-HOSTED</strong><br>
+  Device control for compatible TiviMate-based deployments.
+</p>
 
-Community Edition
+<p align="center">
+  <a href="https://forum.x1panel.space">Forum</a> ·
+  <a href="https://t.me/+XkuQS_QuD6g4Nzc0">Telegram</a> ·
+  <a href="https://discord.gg/vSSw6jHmw">Discord</a>
+</p>
 
-Free community control panel for X1-compatible TiviMate-based APK deployments.
+---
 
-Manage portals, devices, messages, runtime configuration, QR pairing and the X1 Device Agent from a clean web interface.
+## X1 TiviMate Community
 
-Forum · Telegram · Discord
+**X1 TiviMate Community is a standalone public X1 project for managing compatible TiviMate-based deployments.**
 
-</div>
+It is not a deliberately limited demo. The public release is intended to be useful as released and can be self-hosted independently.
 
-About
+This project is also separate from X1's private commercial platforms. Public community software and private commercial systems are different products with different operating scopes.
 
-X1 TiviMate Control — Community Edition is the free edition of the X1 ecosystem, focused exclusively on compatible TiviMate-based APK deployments.
+---
 
-It is designed to be genuinely useful as a standalone community product — not a crippled demo — while keeping professional fleet, reseller, NOC and automation capabilities in X1 Control Center Commercial.
+<p align="center">
+  <img src="./assets/x1-tivimate-control-loop.svg" alt="X1 TiviMate control loop" width="100%" />
+</p>
 
-Community Edition includes
+## What the public project manages
 
-Portal management
+The current public control surface includes:
 
-Canonical device registry
+- portal configuration;
+- device registry and online/offline visibility;
+- welcome and runtime configuration;
+- announcements and device messages;
+- QR pairing;
+- X1 Device Agent enrollment;
+- authenticated device heartbeat;
+- capability reporting;
+- conservative remote actions such as configuration sync, message delivery and update checks;
+- audit logging;
+- secure administrator authentication;
+- optional TOTP two-factor authentication.
 
-Device online/offline visibility
+The operating principle is simple:
 
-Welcome/runtime configuration
+> **A command being sent is not the same as a command being proven successful.**
 
-Announcements and messages
+For production use, validate the result on the actual compatible application/device build.
 
-Basic QR pairing
+---
 
-X1 Device Agent enrollment
+## Device control model
 
-Signed Agent heartbeat
+The public project follows a narrow operational loop:
 
-Capability reporting
+```text
+ENROLL
+  ↓
+PAIR
+  ↓
+SYNC / MESSAGE / UPDATE CHECK
+  ↓
+DEVICE REPORTS STATE
+  ↓
+VERIFY
+```
 
-Safe remote actions:
+The device agent is intended to support authenticated device communication and a deliberately conservative public command surface.
 
-sync_config
+Implementation details that exist only for binary compatibility with older compatible builds are not part of the public product identity.
 
-show_message
+---
 
-check_update
+## Compatibility
 
-Audit logging
+This repository targets **compatible TiviMate-based Android deployments** tested against the integration surface provided by the project.
 
-Secure panel authentication
+Application behavior can vary between builds. A feature existing in the panel does not prove that every historical or third-party APK implements that feature at runtime.
 
-TOTP two-factor authentication
+For real deployment confidence:
 
-Local QR generation for 2FA
+1. configure the panel;
+2. pair a real device;
+3. exercise the required action;
+4. verify the resulting state on the device.
 
-X1 Community branding and ecosystem links
+---
 
-X1 Device Agent
+<p align="center">
+  <img src="./assets/x1-tivimate-boundary.svg" alt="X1 TiviMate responsibility boundary" width="100%" />
+</p>
 
-Phase 2 introduces the X1 Device Agent v2.
+## Responsibility boundary
 
-The Agent uses one-time enrollment and authenticated device communication:
+X1 TiviMate Community is **control software**.
 
-One-time enrollment
-        ↓
-Device token
-        ↓
-HMAC-SHA256 signed requests
-        ↓
-Heartbeat
-        ↓
-Capabilities
-        ↓
-Safe remote commands
+It does not provide IPTV channels, subscriptions, playlists, portal credentials or copyrighted media. Operators are responsible for the infrastructure, services, credentials, application builds and content they configure, and for ensuring they are authorized to use them.
 
-The Community Edition intentionally exposes only a conservative command set:
+---
 
-sync_config
-show_message
-check_update
+## Requirements
 
-Advanced fleet actions remain part of X1 Control Center Commercial.
+Recommended environment:
 
-APK compatibility
-
-This release is intended for the supported X1-compatible TiviMate-based APK using package:
-
-ar.tvplayer.tv
-
-Canonical X1 API base:
-
-/api/reseller/tivimate/
-
-A legacy compatibility route is retained for the supplied compatible APK:
-
-/Gizmos_RC11/api/reseller/tivimate/
-
-The legacy route exists only for binary compatibility. The visible product and project identity is X1.
-
-Requirements
-
-Recommended production environment:
-
+```text
 PHP 8.2+
-
 MariaDB 10.6+ or MySQL 8+
-
 nginx
-
 PDO MySQL
-
 OpenSSL
-
 zlib
-
 mbstring
-
 JSON
-
 HTTPS
+```
 
-Installation
+---
 
-Clone or upload the Community package to your server.
+## Installation
 
 Create the environment file:
 
+```bash
 cp .env.example .env
+```
 
-Configure at minimum:
+Configure the installation-specific application URL and database credentials, generate a unique application key, then run:
 
-APP_URL=https://your-domain.example
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_NAME=x1_tivimate_community
-DB_USER=x1_tivimate
-DB_PASS=CHANGE_ME
-
-Generate a unique application key:
-
-php -r 'echo base64_encode(random_bytes(32)), PHP_EOL;'
-
-Place the result in:
-
-APP_KEY=
-
-Run the database migrations:
-
+```bash
 php bin/migrate.php
+```
 
-Create the first administrator:
+Create the first administrator with the included CLI utility and point the web server to the public web root.
 
-php bin/create-admin.php \
-  --email=admin@example.com \
-  --username=admin \
-  --password='USE-A-LONG-UNIQUE-PASSWORD'
+An example nginx configuration is included in the repository.
 
-Point nginx to:
+### Never expose private runtime paths
 
-public/
+Do not serve configuration, storage, internal modules, database tooling or CLI directories directly through the web server.
 
-An example configuration is included:
+Generate deployment secrets on the target installation. Never reuse example credentials.
 
-nginx.community.example.conf
+---
 
-Never expose .env, storage/, config/, core/, modules/, database/ or bin/ directly through the web server.
+## Public distribution
 
-Community vs Commercial
+Public packages must not include installation-specific or private material such as:
 
-Capability
+- environment files with real secrets;
+- production database credentials;
+- private/signing keys;
+- Android keystores or keystore passwords;
+- bot/service credentials;
+- customer data;
+- runtime databases;
+- uploaded private application artifacts.
 
-Community
+Code protection or obfuscation may make casual copying more difficult, but **obfuscation is not a security boundary**.
 
-X1 Control Center
+---
 
-TiviMate control
+## Security
 
-✅
+For production installations:
 
-✅
+- use HTTPS;
+- use unique administrator credentials;
+- enable TOTP where appropriate;
+- keep PHP/database packages current;
+- protect configuration and runtime storage from direct web access;
+- review audit data;
+- rotate exposed secrets immediately.
 
-Portals / runtime / messages
+Security reports are welcome. Do not publish live credentials, private keys, customer information or working exploitation details in public issues.
 
-✅
+---
 
-✅
+## Independent project notice
 
-Device registry
+X1 TiviMate Community is an independent X1 community project. It is not presented as an official product of, or as affiliated with, the developers or owners of the TiviMate trademark.
 
-✅
+---
 
-✅
+## Community distribution
 
-Basic Device Agent
+The public project is free to download and use under the distribution terms included with the repository.
 
-✅
+Redistribution must preserve the applicable X1 branding and license terms and must not present the software as another vendor's product or include private/commercial X1 components.
 
-✅
+See `COMMUNITY_LICENSE.txt` for the repository's distribution terms.
 
-Safe remote commands
+---
 
-✅
+## X1 ecosystem
 
-✅
+This repository is one public X1 project. It should not be interpreted as the complete X1 platform or as a public blueprint of X1's private commercial engineering.
 
-Advanced Device 360
+<p align="center">
+  <strong>PAIR THE DEVICE.</strong><br>
+  <strong>CONTROL THE STATE.</strong><br>
+  <strong>VERIFY THE RESULT.</strong><br><br>
+  <strong>X1 // DEVICE CONTROL</strong>
+</p>
 
-—
-
-✅
-
-VPN policies
-
-—
-
-✅
-
-Release Vault
-
-—
-
-✅
-
-Staged OTA rollouts
-
-—
-
-✅
-
-Dynamic fleet groups
-
-—
-
-✅
-
-Bulk automation
-
-—
-
-✅
-
-Resellers / customers / licenses
-
-—
-
-✅
-
-Approval workflows
-
-—
-
-✅
-
-NOC / incidents / SLA
-
-—
-
-✅
-
-On-call / runbooks
-
-—
-
-✅
-
-Reliability & production governance
-
-—
-
-✅
-
-Multi-application control
-
-—
-
-✅
-
-The Community Edition is intended for individual/community TiviMate deployments.
-
-X1 Control Center is designed for commercial operations, resellers, large fleets and multi-application environments.
-
-Public distribution
-
-Use the FORUM DIST package for public distribution.
-
-The public build is protected/obfuscated to make casual copying and rebranding more difficult. This protection is not considered a security boundary.
-
-A public package must never contain:
-
-.env
-
-production database credentials
-
-private keys
-
-signing keys
-
-JKS/keystores
-
-keystore passwords
-
-Telegram bot secrets
-
-SaaS credentials
-
-runtime databases
-
-uploaded APK files
-
-customer data
-
-Always generate installation-specific secrets on the target server.
-
-Security
-
-Security reports are welcome.
-
-Please do not publish working exploits, credentials, private keys or customer information in a public issue.
-
-For normal bugs and feature requests, use GitHub Issues or the X1 community channels.
-
-Community
-
-X1 Forum
-https://forum.x1panel.space
-
-Telegram
-https://t.me/+XkuQS_QuD6g4Nzc0
-
-Discord
-https://discord.gg/vSSw6jHmw
-
-Important notice
-
-X1 TiviMate Control is an independent community project and is not presented as an official product of, or as being affiliated with, the developers or owners of the TiviMate trademark.
-
-X1 does not provide IPTV channels, subscriptions, playlists, portal credentials or copyrighted media. The panel is a management/control tool. Users are responsible for ensuring that any services, streams, portals and content they configure are lawful and that they have permission to use them.
-
-License / redistribution
-
-The Community Edition is free to download and use under the included Community Distribution Terms.
-
-You may not:
-
-sell the Community Edition as your own product;
-
-remove X1 branding from redistributed builds without permission;
-
-present the software as another vendor's product;
-
-redistribute private/commercial X1 modules as part of the Community package.
-
-See:
-
-COMMUNITY_LICENSE.txt
-
-for the distribution terms included with the release.
-
-Commercial platform
-
-Need advanced fleet operations?
-
-X1 Control Center adds professional functionality including:
-
-multi-reseller management;
-
-customers and licenses;
-
-advanced Device 360;
-
-VPN policy management;
-
-Release Vault;
-
-staged OTA;
-
-Pilot / Stable release channels;
-
-fleet groups and bulk operations;
-
-approval workflows;
-
-NOC and incident management;
-
-SLA and reliability;
-
-on-call and runbooks;
-
-signed backup/recovery;
-
-production-readiness governance;
-
-multi-app control.
-
-Follow development and announcements through the X1 community channels above.
-
-<div align="center">
-
-X1Tech Solutions SA
-
-Copyright © 2026–Present X1Tech Solutions SA. All Rights Reserved.
-
-Community first. Professional when you need to scale.
-
-</div>
+<p align="center">
+  © 2026 X1Tech Solutions SA. All Rights Reserved.
+</p>

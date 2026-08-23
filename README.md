@@ -28,6 +28,10 @@
 
 This project is separate from X1's private commercial platforms. Public community software and private commercial systems are different products with different operating scopes.
 
+<p align="center">
+  <img src="./assets/x1-tivimate-capabilities.svg" alt="X1 TiviMate capability surface" width="100%" />
+</p>
+
 ---
 
 <p align="center">
